@@ -145,6 +145,23 @@ public:
         }
     }
 
+    static constexpr double EPSILON = 1e-9;
+
+    bool operator==(const Polynomial& other) const 
+    {
+        if (_size != other._size)
+            return false;
+        for (size_t i = 0; i < _size; ++i)
+            if (std::abs(_data[i] - other._data[i]) > EPSILON) 
+                return false;
+        return true;
+    }
+
+    bool operator!=(const Polynomial& other) const 
+    {
+        return !(*this == other);
+    }
+
     ~Polynomial() { delete[] _data; }
 };
 
@@ -198,10 +215,13 @@ int main()
     std::complex<float> data2c[] = { std::complex<float>(1, -4), std::complex<float>(2, -3), 3, 5};
     Polynomial<std::complex<float>> pol1c(data1c, 5);
     Polynomial<std::complex<float>> pol2c(data2c, 4);
-    Polynomial<std::complex<float>> polc = 3 * pol1c;
+    Polynomial<std::complex<float>> polc = std::complex<float>(3, 1) * pol1c * std::complex<float>(1, 2);
     std::cout << polc;
     std::cout << "\nCalculated: " << polc.calculate(2);
     std::cout << "\nIntegrated: ";
     Polynomial<std::complex<float>> integr = findIntegral(polc);
     std::cout << integr;
+
+    if (pol1 != pol2)
+        std::cout << "\n\nwow! The comparison operator is working!";
 }
