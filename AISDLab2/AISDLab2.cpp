@@ -17,10 +17,8 @@ private:
     size_t size;
 
 public:
-    // Конструктор по умолчанию
     LinkedList() : head(nullptr), size(0) {}
 
-    // Конструктор копирования
     LinkedList(const LinkedList& other) : head(nullptr), size(0) {
         Node* currentOther = other.head;
         if (currentOther) {
@@ -31,7 +29,6 @@ public:
         }
     }
 
-    // Конструктор, заполняющий список случайными значениями
     LinkedList(size_t count, T min_val, T max_val, unsigned int seed = std::random_device{}()) : head(nullptr), size(0) {
         std::default_random_engine gen(seed);
 
@@ -51,12 +48,10 @@ public:
         }
     }
 
-    // Деструктор
     ~LinkedList() {
         clear();
     }
 
-    // Операция присваивания
     LinkedList& operator=(const LinkedList& other) {
         if (this != &other) {
             clear();
@@ -71,13 +66,11 @@ public:
         return *this;
     }
 
-
-    // Добавление элемента в конец списка
     void push_tail(const T& data) {
         Node* newNode = new Node(data);
         if (!head) {
             head = newNode;
-            head->next = head; // Зацикливаем
+            head->next = head;
         }
         else {
             Node* tail = head;
@@ -85,12 +78,11 @@ public:
                 tail = tail->next;
             }
             tail->next = newNode;
-            newNode->next = head; // Зацикливаем
+            newNode->next = head;
         }
         size++;
     }
 
-    // Добавление другого списка LinkedList в конец списка
     void push_tail(const LinkedList& other) {
         Node* currentOther = other.head;
         if (currentOther) {
@@ -101,12 +93,11 @@ public:
         }
     }
 
-    // Добавление элемента в начало списка
     void push_head(const T& data) {
         Node* newNode = new Node(data);
         if (!head) {
             head = newNode;
-            head->next = head; // Зацикливаем
+            head->next = head;
         }
         else {
             Node* tail = head;
@@ -115,12 +106,11 @@ public:
             }
             newNode->next = head;
             head = newNode;
-            tail->next = head; // Зацикливаем
+            tail->next = head;
         }
         size++;
     }
 
-    // Добавление списка LinkedList в начало списка
     void push_head(const LinkedList& other) {
         LinkedList temp = other;
         temp.reverse();
@@ -133,7 +123,6 @@ public:
         }
     }
 
-    // Удаление элемента из начала списка
     void pop_head() {
         if (!head) {
             throw std::runtime_error("List is empty");
@@ -149,13 +138,12 @@ public:
             }
             Node* temp = head;
             head = head->next;
-            tail->next = head; // Зацикливаем
+            tail->next = head;
             delete temp;
         }
         size--;
     }
 
-    // Удаление элемента из конца списка
     void pop_tail() {
         if (!head) {
             throw std::runtime_error("List is empty");
@@ -171,13 +159,12 @@ public:
                 prev_tail = tail;
                 tail = tail->next;
             }
-            prev_tail->next = head; // Зацикливаем
+            prev_tail->next = head;
             delete tail;
         }
         size--;
     }
 
-    // Удаление всех элементов Node с информационным полем, равным переданному
     void delete_node(const T& data) {
         if (!head) return;
 
@@ -223,7 +210,6 @@ public:
     }
 
 
-    // Операция доступа по индексу (для чтения)
     const T& operator[](size_t index) const {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
@@ -234,7 +220,6 @@ public:
         }
         return current->data;
     }
-    // Операция доступа по индексу (для записи)
     T& operator[](size_t index) {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
@@ -247,7 +232,6 @@ public:
     }
 
 
-    //  Развернуть список в противоположную сторону
     void reverse() {
         if (size <= 1) return;
 
@@ -256,12 +240,12 @@ public:
         Node* next = nullptr;
         do {
             next = current->next;
-            current->next = prev == nullptr ? head : prev; // Если prev == null, то current это последний элемент, ставим его на голову.
+            current->next = prev == nullptr ? head : prev;
             prev = current;
             current = next;
         } while (current != head);
 
-        head->next = prev; // Обновляем голову на новый last.
+        head->next = prev;
         head = prev;
 
     }
@@ -280,7 +264,6 @@ public:
     }
 
 private:
-    // Функция для очистки списка
     void clear() {
         while (head)
         {
@@ -291,7 +274,6 @@ private:
 };
 
 
-// ---------------------------------------------------------------------------------
 
 int main() {
     try {
